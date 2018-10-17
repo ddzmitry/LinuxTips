@@ -415,10 +415,30 @@ set hive.exec.dynamic.partition=true;
 set hive.exec.dynamic.partition.mode=nonstrict;
 
 create table if not exists table17(col1 int,col2 string,col3 string,col4 int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
-
 load data local inpath'/home/jivesh/files/dynamic'into table table5;
 
-create table if not exists table6(col1 int,col2 string,col3 string,col4 int)
+hive> select * from table17;
+OK
+1       gopal   TP      2012
+2       kiran   HR      2012
+3       kaleel  TP      2012
+4       Prasanth        HR      2012
+5       Nishant TP      2012
+6       Rahul   HR      2012
+7       Chahat  TP      2013
+8       Parun   HR      2013
+9       Bhavi   TP      2013
+```
+> PARTITION NOT PARTITIONED TABLE
+
+```
+create table if not exists table18(col1 int,col2 string,col3 string) partitioned by (year int ) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+hive> insert into table table18 partition(year) select col1,col2,col3,col4 from table17;
+
+Partition default.table18{year=2012} stats: [numFiles=1, numRows=6, totalSize=72, rawDataSize=66]
+Partition default.table18{year=2013} stats: [numFiles=1, numRows=9, totalSize=111, rawDataSize=102]
+Partition default.table18{year=2014} stats: [numFiles=1, numRows=6, totalSize=75, rawDataSize=69]
+Partition default.table18{year=2103} stats: [numFiles=1, numRows=1, totalSize=12, rawDataSize=11]
 
 
 ```

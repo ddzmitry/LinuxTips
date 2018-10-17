@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82ea8ee2-d761-4235-b899-5df16a40efc9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HiveTips/tablecreations.md" beforeDir="false" afterPath="$PROJECT_DIR$/HiveTips/tablecreations.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,14 +33,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="md" value="1676" />
+          <entry key="md" value="1795" />
           <entry key="txt" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="AIDL" value="17" />
-          <entry key="Markdown" value="1659" />
+          <entry key="Markdown" value="1778" />
           <entry key="PLAIN_TEXT" value="12" />
         </counts>
       </usages-collector>
@@ -55,8 +56,8 @@
         <entry file="file://$PROJECT_DIR$/HiveTips/tablecreations.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="294">
-                <caret line="409" lean-forward="true" selection-start-line="409" selection-end-line="409" />
+              <first_editor relative-caret-position="413">
+                <caret line="442" lean-forward="true" selection-start-line="442" selection-end-line="442" />
               </first_editor>
               <second_editor />
             </state>
@@ -115,7 +116,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539741044208" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539741625594" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -143,7 +144,7 @@
       <option name="presentableId" value="Default" />
       <updated>1539010950872</updated>
       <workItem from="1539010952574" duration="16875000" />
-      <workItem from="1539735688936" duration="4871000" />
+      <workItem from="1539735688936" duration="5485000" />
     </task>
     <task id="LOCAL-00001" summary="More on HIVE">
       <created>1539013609059</created>
@@ -163,7 +164,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21746000" />
+    <option name="totallyTimeSpent" value="22360000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -213,8 +214,8 @@
     <entry file="file://$PROJECT_DIR$/HiveTips/tablecreations.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="294">
-            <caret line="409" lean-forward="true" selection-start-line="409" selection-end-line="409" />
+          <first_editor relative-caret-position="413">
+            <caret line="442" lean-forward="true" selection-start-line="442" selection-end-line="442" />
           </first_editor>
           <second_editor />
         </state>
