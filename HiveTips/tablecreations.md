@@ -306,3 +306,119 @@ hive> select 'hadoop' rlike 'ha*';
 OK
 f
 ```
+> Rank function, Dense_rank,
+```$xslt
+create table if not exists table14(col1 string,col2 int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+load data local inpath 'tmp/rankfunctions' overwrite into table table14;
+
+
+hive> select * from table14 limit 3;
+OK
+John    1500
+Albert  1500
+Mark    1000
+
+
+select col1,col2,rank() over(order by col2 desc) as ranking from table14;
+
+leo     1500    1
+Albert  1500    1
+Lesa    1500    1
+John    1500    1
+John    1300    5
+Lui     1300    5
+Frank   1150    7
+Loopa   1100    8
+Mark    1000    9
+
+
+select r1.col1,r1.col2,r1.ranking from (select col1,col2,rank() over(order by col2 desc) as ranking from table14) as r1 where r1.ranking<2;
+
+OK
+leo     1500    1
+Albert  1500    1
+Lesa    1500    1
+John    1500    1
+
+
+select col1,col2,dense_rank() over(order by col2 desc) as ranking from table14;
+
+OK
+leo     1500    1
+Albert  1500    1
+Lesa    1500    1
+John    1500    1
+John    1300    2
+Lui     1300    2
+Frank   1150    3
+Loopa   1100    4
+
+select r1.col1,r1.col2,r1.ranking from (select col1,col2,dense_rank() over(order by col2 desc) as ranking from table14) as r1 where r1.ranking<2;
+
+
+OK
+leo     1500    1
+Albert  1500    1
+Lesa    1500    1
+John    1500    1
+
+
+
+select col1,col2,row_number() over(order by col2 desc) as ranking from table14;
+
+leo     1500    1
+Albert  1500    2
+Lesa    1500    3
+John    1500    4
+John    1300    5
+Lui     1300    6
+Frank   1150    7
+Loopa   1100    8
+Mark    1000    9
+
+select r1.col1,r1.col2,r1.ranking from (select col1,col2,row_number() over(order by col2 desc) as ranking from table14) as r1 where r1.ranking<=2;
+
+OK
+leo     1500    1
+Albert  1500    2
+
+
+select r1.col1,r1.col2,r1.ranking from (select col1,col2,row_number() over(partition by col1 order by col2 desc) as ranking from table14) as r1 where r1.ranking<=2;
+
+Albert  1500    1
+Bhut    800     1
+Frank   1150    1
+John    1500    1
+John    1300    2
+Lesa    1500    1
+
+```
+> PARTITIONING
+```
+DO NOT ADD COLUMN TO TABLE THAT ITS GOING TO BE PARTITIONED BY 
+
+create table if not exists table16(col1 int,col2 string,col3 string)partitioned by (year int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+
+load data local inpath'/tmp/part.txt'into table table16 partition(year=2012);
+load data local inpath'/tmp/part2.txt'into table table16 partition(year=2013);
+
+hive> show partitions table16;
+OK
+year=2012
+year=2013
+
+
+
+
+DYNAMIC PARTITIONS
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+
+create table if not exists table17(col1 int,col2 string,col3 string,col4 int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+
+load data local inpath'/home/jivesh/files/dynamic'into table table5;
+
+create table if not exists table6(col1 int,col2 string,col3 string,col4 int)
+
+
+```
