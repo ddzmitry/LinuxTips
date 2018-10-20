@@ -442,3 +442,84 @@ Partition default.table18{year=2103} stats: [numFiles=1, numRows=1, totalSize=12
 
 
 ```
+ALTER TABLE STATEMENTS
+```
+create external table msk_table(col1 int,col2 string,col3 string)partitioned by (year int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile location '/user/dzmitry/msk_table';
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+insert into table msk_table partition(year) select col1,col2,col3,year from table18;
+load data local inpath'/tmp/part2.txt'into table msk_table partition(year=2013);
+alter table msk_table drop partition(year=2013);
+```
+ADDING HARD CODED PARTITION (NEED TO PROVIDE LOCATION FOR EXTERNAL TABLE)
+```
+alter table msk_table add partition(year=2016) location'/user/dzmitry/msk_table/year=2016' ;
+
+hive> show partitions msk_table;
+OK
+year=2012
+year=2016
+
+
+```
+ADDING PARTITIONS THROUGH HDFS 
+```
+hdfs dfs -mkdir /user/dzmitry/msk_table/year=2017
+
+TO KEEP HIVE UPDATED WE NEED TO MSCK TABLE
+hive> msck repair table mask_table;
+WILL UPDATE METADATA
+
+
+```
+MORE ON ALTERATION
+```
+create table if not exists table9(col1 int,col2 string,col3 string,col4 int)row format delimited fields terminated by',' lines terminated by'\n' stored as textfile;
+
+load data local inpath'/home/jivesh/files/dynamic'into table table9;
+
+alter table table5 rename to table10;
+desc table9;
+
+alter table table10 change column col3 expalination int;
+alter table table10 change column  expalination col3 string;
+
+alter table table10 change column col1 id int after col2;
+
+alter table table10 add columns (col5 int,col6 string);
+desc table10;
+select * from table10;
+
+alter table table10 replace columns (col7 int,col8 int);
+desc table10;
+select * from table10;
+
+alter table table10 set tblproperties('creator'='jivesh');
+desc formatted table10;
+
+alter table table10 set fileformat sequencefile;
+
+```
+BUCKETING (Bucket partitions on columns based of values) Bucket is textfile everything will be decided based of the hashing algorithm 
+```
+set hive.enforce.bucketing=true;
+set hive.exec.dynamic.partition=true;
+
+create table if not exists bucket_table(col1 int,col2 string,col3 string,col4 int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+
+load data local inpath'/tmp/bucket.txt'into table bucket_table;
+
+```
+BUCKETING MECHANISM
+```
+create table if not exists bucket_bucket(col1 int,col2 string,col3 string,col4 int) clustered by(col2) into 4 buckets stored as textfile;
+insert into table bucket_bucket select col1,col2,col3,col4 from bucket_table;
+```
+BUCKET AND PARTITIONING 
+```
+create table if not exists buket_partition(col1 int,col2 string,col3 string)partitioned by (year int) clustered by(col2) into 4 buckets stored as textfile;
+
+insert into table buket_partition partition(year) select col1,col2,col3,col4 from bucket_bucket;
+
+WILL CREATE TABLE PARTITIONED BY YEAR AND EACH PARTITION WILL HAVE FOUR BUCKETS FOR DATA TO BE HA
+```
