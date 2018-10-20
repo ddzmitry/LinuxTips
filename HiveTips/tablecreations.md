@@ -767,5 +767,46 @@ public final class UpperUDF extends UDF {
       }
 }
 
+```
+ADD JAR
+```
+hive> add jar /tmp/UDF_function-1.0-SNAPSHOT.jar
+CREATE FUNCTIONS
+create temporary funciton f2 as 'com.dzmitry.ud2';
+select col1,f2(col2) from buket_partition;
+```
+TABLE PROPERTIES
+```
+SKIPPING HEADER AND FOOTER WHILE LOADING INTO HIVE TABLE
+EX FILE
+Loopa,1100
+Lui,1300
+Lesa,900
+Pars,800
+leo,700
+lock,650
+pars,900
+jack,700
+fransis,1000
+system=linux.14.0.1
+version=2.0
+sub-version=3.4
+root@hadoop:/tmp# cat prop.txt
 
 
+hive>  create table table_skipped (col1 string, col2 int) row format delimited fields terminated by',' lines terminated by'\n' stored as textfile tblproperties("skip.footer.line.count"="3");
+
+ load data local inpath "/tmp/log2.txt" into table table_skipped;
+ 
+ hive> select * from table_skipped;
+ OK
+ John    1300
+ Albert  1200
+ Mark    1000
+ Frank   1150
+ Loopa   1100
+ Lui     1300
+ Lesa    900
+
+
+```
