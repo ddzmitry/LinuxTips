@@ -515,11 +515,257 @@ BUCKETING MECHANISM
 create table if not exists bucket_bucket(col1 int,col2 string,col3 string,col4 int) clustered by(col2) into 4 buckets stored as textfile;
 insert into table bucket_bucket select col1,col2,col3,col4 from bucket_table;
 ```
-BUCKET AND PARTITIONING 
+BUCKET AND PARTITIONING  (WILL CREATE TABLE PARTITIONED BY YEAR AND EACH PARTITION WILL HAVE FOUR BUCKETS FOR DATA TO BE HA)
 ```
 create table if not exists buket_partition(col1 int,col2 string,col3 string)partitioned by (year int) clustered by(col2) into 4 buckets stored as textfile;
 
 insert into table buket_partition partition(year) select col1,col2,col3,col4 from bucket_bucket;
 
-WILL CREATE TABLE PARTITIONED BY YEAR AND EACH PARTITION WILL HAVE FOUR BUCKETS FOR DATA TO BE HA
+
 ```
+TABLE SAMPLING (WILL FETCH DATA FROM ALL PARTITIONS)
+
+```
+hive> select col1,col2,col3,year from buket_partition tablesample(bucket 1 out of 4);
+OK
+6       Rahul   HR      2012
+6       Rahul   HR      2012
+10      Sukhbir HR      2013
+13      Shama   TP      2013
+
+hive> select col1,col2,col3,year from buket_partition tablesample(1 percent);
+hive> select col1,col2,col3,year from buket_partition tablesample(1  mb);
+hive> select col1,col2,col3,year from buket_partition tablesample(10 rows);
+
+```
+DISABLE TABLE OR PARTITION TO BE DROPPED
+```
+alter table buket_partition enable no_drop;
+alter table buket_partition disable no_drop;
+```
+FOR PARTITIONS 
+```
+alter table buket_partition partition(year=2013) enable no_drop;
+alter table buket_partition partition(year=2013) disable no_drop;
+```
+TO RESTRICT QUERING
+```
+alter table buket_partition enable offline;
+alter table buket_partition disable offline;
+
+alter table buket_partition partition(year=2013) enable offline;
+alter table buket_partition partition(year=2013) disable offline;
+
+
+```
+JOINS
+```
+create table if not exists l_join(col1 int,col2 string,col3 int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+load data local inpath'/tmp/left-file-join..txt'overwrite into table l_join;
+
+hive> select * from l_join;
+OK
+499     ice hockey      11
+502     football        11
+503     icehockey       6
+504     baseball        9
+
+
+create table if not exists m_join(col1 int,col2 string,col3 int) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+load data local inpath'/tmp/middle-file-join.txt'overwrite into table m_join;
+
+hive> select * from m_join;
+OK
+499     ice hockey      110000
+502     football        1100000
+503     icehockey       6678678
+504     baseball        9678979
+507     cricket 11678989
+
+
+create table if not exists r_join(col1 int,col2 string,col3 string) row format delimited fields terminated by',' lines terminated by'\n'stored as textfile;
+load data local inpath'/tmp/right-file-join.txt'overwrite into table r_join;
+
+hive> select * from r_join;
+OK
+499     football        non parent
+502     football        non parent
+503     volleyball      non parent
+504     baseball        non parent
+
+
+select l_join.col1,l_join.col3,m_join.col1,m_join.col3 from l_join join m_join on (l_join.col1=m_join.col1);
+
+OK
+499     11      499     110000
+502     11      502     1100000
+503     6       503     6678678
+
+
+
+select l_join.col1,l_join.col3,m_join.col1,m_join.col3 from l_join left outer join m_join on (l_join.col1=m_join.col1);
+
+OK
+499     11      499     110000
+502     11      502     1100000
+503     6       503     6678678
+504     9       504     9678979
+
+select l_join.col1,l_join.col3,r_join.col1,r_join.col3 from l_join right outer join r_join on (l_join.col1=r_join.col1);
+
+select l_join.col1,l_join.col3,m_join.col1,m_join.col3 from l_join full outer join m_join on (l_join.col1=m_join.col1);
+
+NULL    NULL    345     56879879
+499     11      499     110000
+502     11      502     1100000
+503     6       503     6678678
+504     9       504     9678979
+507     11      507     11678989
+509     11      509     11879879
+511     12      NULL    NULL
+
+
+3 TABLE JOIN--same key
+
+select table5.col1,table5.col3,table7.col1,table7.col3,table6.col1,table6.col3 from table5 join table7 on (table5.col1=table7.col1) join table6 on (table7.col1=table6.col1);
+
+3 TABLE JOIN--different key
+
+select table5.col1,table5.col3,table7.col2,table7.col3,table6.col2,table6.col3 from table5 join table7 on (table5.col1=table7.col1) join table6 on (table7.col2=table6.col2);
+
+MAP JOIN ALLOWS TO STORE IN MEMORY
+set hive.auto.convert.join=true;
+set hive.mapjoin.smalltable.filesize;
+select l_join.col1,l_join.col3,r_join.col1,r_join.col3 from l_join right outer join r_join on (l_join.col1=r_join.col1);
+Number of reduce tasks is set to 0 since there's no reduce operator
+FILL FIRE ONLY MAPPER
+
+BUCKET MAP JOIN
+BOTH TABLE SOULD BE BUCKETED BY SAME COLUMN AND PARTITIONED
+hive.input.format=org.apache.hadoop.hive.ql.io.BucketizedHiveInputFormat;
+
+set hive.optimize.bucketmapjoin = true;
+set hive.optimize.bucketmapjoin.sortedmerge = true;
+set hive.auto.convert.sortmerge.join=true;
+
+
+```
+
+CREATE VIEWS (Virtual tables)
+
+```
+create view if not exists b_b_view  as select * from buket_partition;
+create view v2 as select * from b_b_view where col1%2=0;
+hive> select * from v2;
+OK
+6       Rahul   HR      2012
+6       Rahul   HR      2012
+2       kiran   HR      2012
+4       Prasanth        HR  
+create view if not exists v4 as select col1 as id, col2 as name from buket_partition;
+hive> select * from v4;
+OK
+6       Rahul
+6       Rahul
+1       gopal
+5       Nishant
+1       gopal
+5       Nishant
+
+create view if not exists v5 as select col1,concat(col2,col3) from buket_partition;
+
+OK
+6       RahulHR
+6       RahulHR
+1       gopalTP
+
+
+hive> create view v9 as select r_join.col1,b_b_view.col2,b_b_view.col3 from b_b_view left join r_join ON (r_join.col1=b_b_view.col1);
+
+
+Total MapReduce CPU Time Spent: 0 msec
+OK
+NULL    Rahul   HR
+NULL    Rahul   HR
+NULL    gopal   TP
+NULL    Nishant TP
+NULL    gopal   TP
+
+alter view v9 as select * from tab1e1;
+alter view v9 rename to v99;
+drop view v99;
+
+```
+
+INDEXING IN HIVE acts as reference to record
+COMPACT AND BITMAP BUT SEARCHING TIME WILL BE DIFFERENT 
+```
+create index i1 on table buket_partition(col3) as 'COMPACT' with deferred rebuild;
+TO APPLY INDEX WE NEED TO ALTER IT ON TABLE
+alter index i4 on  buket_partition rebuild;
+
+create index i2 on table buket_partition(col3) as 'COMPACT' with deferred rebuild as rcfile;
+create index i3 on table buket_partition(col3) as 'COMPACT' with deferred rebuild row format delimited fields terminated by '\n' stored as textfile;
+
+MULTIBLE INDEXES
+create index i3 on table buket_partition(col3) as 'BITMAP' with deferred rebuild;
+TO APPLY INDEX WE NEED TO ALTER IT ON TABLE
+alter index i4 on  buket_partition rebuild;
+create index i4 on table buket_partition(col4) as 'BITMAP' with deferred rebuild;
+alter index i5 on  buket_partition rebuild;
+TO SEE INDEXES;
+hive> show formatted index on buket_partition;
+OK
+idx_name                tab_name                col_names               idx_tab_name            idx_type                comment
+
+
+i1                      buket_partition         col3                    testing__buket_partition_i1__   compact
+i3                      buket_partition         col3                    testing__buket_partition_i3__   compact
+i4                      buket_partition         col3                    testing__buket_partition_i4__   bitmap
+
+
+hive> SELECT avg(col1) as avg from buket_partition where col3='TP';
+OK
+11.0
+
+drop index i1 on buket_partition;
+
+```
+UDF (USER DEFINED FUNCTIONS)
+```java
+
+package com.hive;
+import org.apache.hadoop.hive.ql.exec.UDF;
+import org.apache.hadoop.io.Text;
+
+public final class UpperUDF extends UDF {
+    public Text evaluate(final Text s)
+{
+     if(s==null)
+     {
+        return null;
+      }
+      return new Text(s.toString().toUpperCase());
+      }
+}
+
+```
+
+```java
+package com.hive;
+import org.apache.hadoop.hive.ql.exec.UDF;
+import org.apache.hadoop.io.Text;
+
+public final class UpperUDF extends UDF {
+    public Text evaluate(final Text s)
+{
+     if(s==null)
+     {
+        return null;
+      }
+      return new Text(s.toString().toUpperCase());
+      }
+}
+
+
+
