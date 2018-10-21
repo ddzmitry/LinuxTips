@@ -808,5 +808,297 @@ hive>  create table table_skipped (col1 string, col2 int) row format delimited f
  Lui     1300
  Lesa    900
 
+hive>  create table table_skipped (col1 string, col2 int) row format delimited fields terminated by',' lines terminated by'\n' stored as textfile tblproperties("skip.header.line.count"="3");
 
+```
+
+IMMUTABLE TABLES
+
+```
+insert into table  table10 select * from table11;
+NULL    2
+NULL    NULL
+NULL    NULL
+NULL    col2
+1       "Pintail
+2       "Woodcock
+3       "Skua
+IF YOU CREATE IMMUTABLE TABLE YOU WILL NOT BE ABLE TO DO IT 
+ONLY IF TABLE WAS CLEARED
+create table table_immutable (col1 string, col2 int) row format delimited fields terminated by',' lines terminated by'\n' stored as textfile tblproperties("immutable"="true");
+
+```
+
+NULL FORMAT PROPERTY
+
+```
+create table skip_null (col1 string, col2 string,col3 int)  row format delimited fields terminated by ',' lines terminated by'\n' stored as textfile tblproperties("serilazation.null.format"="");
+load data local inpath '/tmp/prop.txt' into table skip_null;
+
+WILL ADD NULL VALUES TO EMPTY
+hive> select * from skip_null;
+OK
+John    NULL    200
+Albert  HR      1900
+Mark    NULL    1000
+Frank   TP      1150
+```
+
+ACID/Transactional Properties Hive
+```
+ONLE ORC FILES
+ONLY ON BUCKETED TABLES
+
+```
+in hive.txn.manager
+```xml
+<property>
+   <name>hive.support.concurrency</name>
+   <value>true</value>
+</property>
+
+<property>
+   <name>hive.enforce.bucketing</name>
+   <value>true</value>
+</property>
+
+<property>
+   <name>hive.exec.dynamic.partition.mode</name>
+   <value>nonstrict</value>
+</property>
+
+<property>
+   <name>hive.txn.manager</name>
+   <value>org.apache.hadoop.hive.ql.lockmgr.DbTxnManager</value>
+</property>
+
+<property>
+   <name>hive.compactor.initiator.on</name>
+   <value>true</value>
+</property>
+
+<property>
+   <name>hive.compactor.worker.threads</name>
+   <value>1</value>
+</property>
+```
+```
+
+or 
+
+set hive.support.concurrency = true;
+set hive.enforce.bucketing=true;
+set hive.exec.dynamic.partition.mode = nonstrict;
+set hive.compactor.initiator.on = true;
+set hive.compactor.worker.threads =1;
+set hive.txn.manager = org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+
+update hive conf 
+<property>
+  <name>hive.in.testing</name>
+  <value>true</value>
+</property>
+
+create table employee (emp_id int, emp_name string , emp_dep string) clustered by (emp_id) into 4 buckets stored as orc tblproperties('transactional'='true');
+
+
+INSERT INTO table employees values(101,'Jack','HR'),(102,'Frank','HR');
+update employee set emp_dep="Accounts' where emp_id = 102;
+Will fire MR Job to update the data;
+
+```
+
+CREATE ORC TABLES
+
+```
+create table if not exists orc_table(col1 int,col2 string,col3 string,col4 int) row format delimited fields terminated by ',' lines terminated by '\n' stored as  orc tblproperties("orc.compress"="zlib");
+
+> Snappy (Parque)
+> GZIP
+
+Can also set 
+orc.compress.size = "value"
+orc.stripe.size = "value"
+orc.row.index.stride = "value"
+orc.create.index = "true/false"
+orc.bloom.filter.columns
+orc.bloom.filter.fpp
+
+
+```
+
+HIVE CONFIGURATION SETTINGS
+```
+To see header of table 
+set hive.cli.print.header=true;
+
+set dfs.block.size;
+> Show  parquet block format
+set parquet.block.size;
+>  Shows default format for table when created 
+set hive.default.fileformat;
+set hive.default.fileformat=orc;
+
+set hive.mapred.mode;
+set hive.groupby.orderby.position.alias;
+
+IF SET set hive.groupby.orderby.position.alias=true;
+YOU DONT HAVE TO SPECIFY COLUMN NAME JUST NUMBER 
+hive> select col1,col2 from table11 order by 2;
+OK
+col1    col2
+        NULL
+        NULL
+aa      1
+cv      1
+
+Specify how many reducers will be used when executing the MR Job
+set mapred.reduce.tasks;
+Set bytes per reducer 
+set hive.exec.reducers.bytes.per.reducer=25600000;
+MAX reducer memory
+set hive.exec.reducers.max;
+
+Spelucative execution run copy of the data node in master node 
+NB! It will run same task on datanode and master node and which ever comes first fill be shown
+set mapred.map.tasks.speculative.execution;
+set reduce.map.tasks.speculative.execution;
+
+TO Force bucketing 
+set hive.enforce.bucketing = True;
+
+To Set autojoining on small tables 
+set hive.auto.convert.join = true;
+```
+
+MERGE FILES IN HIVE
+```
+hive.merge.mapfiles
+hive.merge.mapredfiles
+hive.merge.size.per.task
+hive.merge.smallfiles.avgsize
+```
+PARALLELIZM IN HIVE
+```
+create table v_char(col1 int, col2 string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;
+load data local inpath '/tmp/parallel.txt' into table v_char;
+
+v_char.col1     v_char.col2
+1       e
+2       d
+3       e
+5       a
+6       e
+
+Will use this table for parallel
+hive> select * from table18;
+OK
+table18.col1    table18.col2    table18.col3    table18.year
+1       gopal   TP      2012
+2       kiran   HR      2012
+
+
+hive> select a.col1,a.col2,b.col2 from (select * from table18 where col3=2012) a join (select * from v_char where col2='e') b on (a.col1=b.col1);
+When Parallelizm is false 
+took 26 sec
+
+APPLY
+set hive.exec.parallel = true;
+Takes less time;
+
+```
+
+HIVE VARIABLES Limited to session to set it perm need to update hiverc
+```
+set  year=2012;
+hive> select * from table18 where year=${hiveconf:year};
+set table = table18;
+hive> select * from ${hiveconf:table} where year=${hiveconf:year};
+OK
+table18.col1    table18.col2    table18.col3    table18.year
+1       gopal   TP      2012
+2       kiran   HR      2012
+3       kaleel  TP      2012
+4       Prasanth        HR      2012
+
+RUN IN BASH 
+hive --hiveconf year=2012 -e 'select * from table18 where year=${hiveconf:year};'
+hive --hiveconf year=2012  --hiveconf table=table18 -e 'select * from ${hiveconf:year} where year=${hiveconf:year};'
+
+hive --hiveconf year=2012  --hiveconf table=table18 -f hdfs://locationofscript.hql
+```
+RUN UNIX COMMANDS FROM HIVE SHELL
+```
+set hivevar:table=table9;
+hive> select * from ${hivevar:table};
+OK
+table18.col1    table18.col2    table18.col3    table18.year
+1       gopal   TP      2012
+
+OR IN BASH
+hive --hivevar table=table18 -e 'select * from ${hivevar:table};'
+
+hive --hivevar year=2012  --hiveconf table=table18 -f hdfs://locationofscript.hql
+
+TO RUN SCRIPTS.hql in hive we need to use source command
+source script.hql;
+
+UNIX COMMANDS
+
+hive> !ls
+
+create table props_ls(col1 string, col2 string,col3 string,col4 string,col5 string,col6 string,col7 string,col8 string,col9 string) row format delimited fields terminated by ' ' lines terminated by '\n' stored as textfile;
+hive> !ls -la /tmp >> ls_out.txt
+hive> load data local inpath '/tmp/ls_out.txt' into table props_ls;
+
+RUN HDFS
+hive> dfs -ls /;
+hive> dfs -mkdir poop;
+hive> dfs -rmr poop;
+```
+SUBSTRING VALUES
+```
+hive> set hive.variable.substitute=true;
+hive> set table=tabl18;
+hive> set new_table = ${hiveconf:table};
+
+
+```
+
+USING CUSTOM INPUT FORMAT
+
+```
+EXAMPLE INPUT 
+011
+Jgarg
+Hive to Advance Hive
+Hadoop Mapreduce in Depth
+02323
+012
+Sahil
+Java course
+C++ course
+026767
+013
+Rahul
+Photography
+Course on Photoshop
+026865
+
+create table that will read first five lines as row from this textfile
+
+Have to create custom MR job 
+And create table using inputformat from custom jar 
+
+```
+
+MODES OF HIVE 
+```
+Embeded - Cloudera Recommends only for experemental mode 
+ Local - Multible HIVE service JVMs
+  Remote Mode  - Beeline CLI -> HiveServer2
+  
+  hive> set mapred.job.tracker;
+  mapred.job.tracker=host:9001
+  
 ```
