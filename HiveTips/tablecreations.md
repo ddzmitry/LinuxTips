@@ -1102,3 +1102,176 @@ Embeded - Cloudera Recommends only for experemental mode
   mapred.job.tracker=host:9001
   
 ```
+COMPRESSED FILES IN HIVE
+
+```
+HVIE WILL AUTOMATICALLY DECOMPRESS any file when executing (GZIP,BZIP,)
+set mapred.compress.map.output = true;
+
+CODECS
+set mapred.map.output.compression.codec;
+Can vbe set to 
+Gzip, bzip2, LZO, Snappy
+
+set mapred.output.compress=true
+set mapred.output.compresion.codec = lzo;
+
+```
+HIVERC File Executing when launching hive shell;
+```
+can be created in config folder of hive
+.hiverc
+
+```
+CARTESION PRODUCT
+```
+hive> select * from table18,v_char;
+table18.col1    table18.col2    table18.col3    table18.year    v_char.col1     v_char.col2
+1       gopal   TP      2012    1       e
+1       gopal   TP      2012    2       d
+1       gopal   TP      2012    3       e
+1       gopal   TP      2012    5       a
+1       gopal   TP      2012    6       e
+1       gopal   TP      2012    7       e
+1       gopal   TP      2012    8       d
+1       gopal   TP      2012    9       s
+1       gopal   TP      2012    10      e
+
+
+```
+ARCHIVING IN HIVE
+
+```
+set hive.archive.enabled=true;
+set hive.archive.har.parentdir.settable = true;
+set har.partfile.size=1095511627776
+
+alter table tablename archive partition (year=2012);
+
+```
+
+LOADING XML HIVE
+```xml
+<CATALOG>
+<BOOK>
+<TITLE>Hadoop Defnitive Guide</TITLE>
+<AUTHOR>Tom White</AUTHOR>
+<COUNTRY>US</COUNTRY>
+<COMPANY>CLOUDERA</COMPANY>
+<PRICE>24.90</PRICE>
+<YEAR>2012</YEAR>
+</BOOK>
+<BOOK>
+<TITLE>Programming Pig</TITLE>
+<AUTHOR>Alan Gates</AUTHOR>
+<COUNTRY>USA</COUNTRY>
+<COMPANY>Horton Works</COMPANY>
+<PRICE>30.90</PRICE>
+<YEAR>2013</YEAR>
+</BOOK>
+</CATALOG>
+```
+```
+wget http://central.maven.org/maven2/com/ibm/spss/hive/serde2/xml/hivexmlserde/1.0.0.0/hivexmlserde-1.0.0.0.jar
+hive> ADD JAR /tmp/hivexmlserde-1.0.0.0.jar;
+
+
+CREATE TABLE book_details(TITLE STRING, AUTHOR STRING,COUNTRY STRING,COMPANY STRING,PRICE FLOAT,YEAR INT)
+ROW FORMAT SERDE 'com.ibm.spss.hive.serde2.xml.XmlSerDe'
+WITH SERDEPROPERTIES (
+"column.xpath.TITLE"="/BOOK/TITLE/text()",
+"column.xpath.AUTHOR"="/BOOK/AUTHOR/text()",
+"column.xpath.COUNTRY"="/BOOK/COUNTRY/text()",
+"column.xpath.COMPANY"="/BOOK/COMPANY/text()",
+"column.xpath.PRICE"="/BOOK/PRICE/text()",
+"column.xpath.YEAR"="/BOOK/YEAR/text()")
+STORED AS INPUTFORMAT 'com.ibm.spss.hive.serde2.xml.XmlInputFormat'
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
+TBLPROPERTIES ("xmlinput.start"="<BOOK","xmlinput.end"= "</BOOK>");
+
+load data local inpath '/tmp/books.xml' into table book_details;
+
+hive> select * from book_details;
+OK
+book_details.title      book_details.author     book_details.country    book_details.company    book_details.price      book_details.year
+Hadoop Defnitive Guide  Tom White       US      CLOUDERA        24.9    2012
+Programming Pig Alan Gates      USA     Horton Works    30.9    2013
+
+```
+
+IMPLEMENT SCD Slowly Changing Dimentions
+```
+hive> select * from rank_1;
+OK
+rank_1.col1     rank_1.col2
+John    1300
+Albert  1200
+Mark    1000
+
+hive> select * from rank_2;
+OK
+rank_2.col1     rank_2.col2
+John    1500
+Albert  1900
+Mark    1000
+
+
+UPDATE VALUES IN TABLE
+rank_2s -> alies
+rank_1s -> alies 
+FROM 
+        concat(rank_1.col1,',',rank_1.col2) as rank_1s,
+        concat(rank_2.col1,',',rank_2.col2) as rank_2s
+
+select 
+    case when cdc_codes ='Update' Then rank_2s
+        when cdc_codes = 'NoChange' then rank_1s
+        when cdc_codes = 'New' then rank_2s
+        when cdc_codes = 'Deletes' then rank_1s
+   end
+from (select 
+    case    when rank_1.col1=rank_2.col1 and rank_1.col2=rank_2.col2 then  'NoChange'
+            when rank_1.col1=rank_2.col1 and rank_1.col2<>rank_2.col2 then  'Update'
+            when rank_1.col1 is null then 'New'
+            when rank_2.col1 is null then 'Deletes'
+             end as cdc_codes,
+        concat(rank_1.col1,',',rank_1.col2) as rank_1s,
+        concat(rank_2.col1,',',rank_2.col2) as rank_2s
+    from rank_1
+    full outer join rank_2 on rank_1.col1=rank_2.col1) as b1
+    
+    
+    Total MapReduce CPU Time Spent: 0 msec
+    OK
+    _c0
+    Albert,1900
+    Bhut,800
+    Frank,1150
+    John,1500
+    Lesa,900
+
+
+```
+WC Ecample 
+```
+create table wc(line string)  stored as textfile;
+load data local inpath '/tmp/wc.txt' into table wc;
+
+hive> select * from wc;
+OK
+wc.line
+john,lupa,john,frank,frank,john,kuoa,john,frank,frank,john,frank,frank,lupa,john,frank,lupa,john,frank
+
+
+EXPLODE DATA
+
+hive> select word,count(1) as count from (select explode(split(line,',')) as word from wc) w group by word;
+OK
+word    count
+frank   8
+john    7
+kuoa    1
+lupa    3
+
+
+```
