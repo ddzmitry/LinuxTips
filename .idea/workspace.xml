@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82ea8ee2-d761-4235-b899-5df16a40efc9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/SaltStack/Info.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaltStack/Info.md" beforeDir="false" afterPath="$PROJECT_DIR$/SaltStack/Info.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +40,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="master-shell-history" value="124" />
-          <entry key="md" value="11143" />
+          <entry key="md" value="12077" />
           <entry key="minion-shell-history" value="39" />
           <entry key="txt" value="12" />
         </counts>
@@ -49,7 +49,7 @@
         <counts>
           <entry key="AIDL" value="17" />
           <entry key="JAVA" value="1" />
-          <entry key="Markdown" value="11122" />
+          <entry key="Markdown" value="12056" />
           <entry key="PLAIN_TEXT" value="175" />
           <entry key="SQL" value="3" />
         </counts>
@@ -94,8 +94,8 @@
         <entry file="file://$PROJECT_DIR$/SaltStack/Info.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="481">
-                <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+              <first_editor relative-caret-position="521">
+                <caret line="324" column="32" selection-start-line="324" selection-start-column="32" selection-end-line="324" selection-end-column="32" />
               </first_editor>
               <second_editor />
             </state>
@@ -194,7 +194,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542161738376" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542167422171" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -228,7 +228,7 @@
       <updated>1539010950872</updated>
       <workItem from="1539010952574" duration="16875000" />
       <workItem from="1539735688936" duration="40431000" />
-      <workItem from="1542060638878" duration="13216000" />
+      <workItem from="1542060638878" duration="17838000" />
     </task>
     <task id="LOCAL-00001" summary="More on HIVE">
       <created>1539013609059</created>
@@ -248,13 +248,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70522000" />
+    <option name="totallyTimeSpent" value="75144000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2249467" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2249467" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -271,7 +271,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.329718" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3373102" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3373102" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -346,8 +346,8 @@
     <entry file="file://$PROJECT_DIR$/SaltStack/Info.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="481">
-            <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+          <first_editor relative-caret-position="521">
+            <caret line="324" column="32" selection-start-line="324" selection-start-column="32" selection-end-line="324" selection-end-column="32" />
           </first_editor>
           <second_editor />
         </state>
