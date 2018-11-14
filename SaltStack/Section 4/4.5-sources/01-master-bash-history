@@ -1,0 +1,9 @@
+mkdir /srv/pillar
+vi /srv/pillar/name.sls
+salt '*' saltutil.refresh_pillar
+salt '*' pillar.items
+salt '*' pillar.get name
+vi /srv/salt/apache/welcome.sls
+salt '*' state.sls apache.welcome
+salt '*' saltutil.refresh_pillar
+salt '*' state.sls apache.welcome pillar='{name: Override}'

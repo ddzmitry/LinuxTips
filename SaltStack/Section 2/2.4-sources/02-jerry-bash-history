@@ -1,0 +1,5 @@
+salt-call test.ping
+salt-call cmd.run 'ls /etc/salt'
+salt-call cmd.run 'ls /etc/salt' -l debug
+salt-call network.netstat
+salt-call network.netstat -l debug

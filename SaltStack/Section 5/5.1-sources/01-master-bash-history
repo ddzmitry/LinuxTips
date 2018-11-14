@@ -1,0 +1,6 @@
+ls /srv/salt/apache/
+salt jerry state.sls apache,apache.welcome
+vi /srv/salt/apache/welcome.sls
+salt jerry state.sls apache.welcome
+vi /srv/salt/top.sls
+salt jerry state.highstate

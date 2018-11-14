@@ -1,0 +1,8 @@
+mkdir /srv/reactor
+vi /etc/salt/master
+systemctl restart salt-master
+salt-run state.event pretty=true
+vi /etc/salt/master
+systemctl restart salt-master
+salt-run state.event pretty=true
+salt '*' state.sls myapp pillar='{version: develop}'

@@ -1,0 +1,35 @@
+salt jerry sys.doc test.ping
+salt jerry sys.doc test | less
+salt jerry sys.list_modules
+salt jerry sys.list_functions | less
+salt jerry sys.doc pkg.list_pkgs | less
+salt jerry pkg.list_pkgs | less
+salt -L jerry,stuart pkg.list_pkgs | grep wget
+salt -L jerry,stuart pkg.list_pkgs --out=txt | grep wget
+salt -L jerry,stuart pkg.list_pkgs --out=txt | grep wget | cut -c -20
+salt stuart pkg.install wget
+salt -L jerry,stuart pkg.list_pkgs --out=txt | grep wget | cut -c -20
+salt stuart user.list_users
+salt stuart sys.doc user | less
+salt stuart user.getent root
+salt stuart sys.doc service | less
+salt stuart service.running
+salt stuart sys.doc service | less
+salt stuart service.get_running
+salt stuart status.uptime
+salt -L stuart,jerry status.uptime
+salt -L stuart,jerry status.diskusage
+salt -L stuart,jerry test.version
+salt -L stuart,jerry test.versions_report
+salt -L stuart,jerry cmd.run 'whoami'
+salt -L stuart,jerry cmd.run 'date'
+salt -L stuart,jerry cmd.run 'ls /etc/salt'
+salt -L stuart,jerry cmd.run 'cat /etc/salt/grains'
+salt -L stuart,jerry cmd.run_all 'cat /etc/salt/grains'
+salt -L stuart,jerry grains.items
+salt -L stuart,jerry grains.get os_family
+salt -L stuart,jerry grains.get selinux:enforced
+salt -L stuart,jerry cp.list_master
+salt -L stuart,jerry test.ping
+salt -L stuart,jerry match 'stuart,jerry' tgt_type=list
+salt -L stuart,jerry match.list 'stuart,jerry'

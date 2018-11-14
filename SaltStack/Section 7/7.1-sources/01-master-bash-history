@@ -1,0 +1,10 @@
+vi /etc/salt/master
+systemctl restart salt-master
+salt '*' test.ping
+salt -a auto '*' test.ping
+salt -a auto '*' cmd.run whoami
+yum install pyOpenSSL salt-minion salt-api
+salt-call --local tls.create_self_signed_cert
+systemctl restart salt-master
+systemctl start salt-api
+curl -sSik https://localhost:8000

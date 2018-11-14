@@ -1,0 +1,5 @@
+salt jerry state.sls apache
+salt jerry grains.get os_family
+salt '*' grains.get os_family
+vi /srv/salt/apache.sls
+vi /srv/salt/mods.sls

@@ -1,0 +1,6 @@
+vi /srv/salt/apache/mods.sls
+vi /srv/salt/myapp.sls
+salt jerry state.sls apache.mods
+salt '*' state.sls myapp
+salt jerry pkg.install git
+salt '*' state.sls myapp

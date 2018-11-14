@@ -1,0 +1,7 @@
+salt -L jerry,stuart '*' test.ping
+salt -L jerry,stuart test.ping
+salt -L jerry,stuart cmd.run 'ls /etc/salt'
+salt -L jerry,stuart cmd.run 'ls' cwd='/etc/salt'
+salt -L jerry,stuart cmd.run cmd='ls' cwd='/etc/salt'
+salt -L jerry,stuart test.arg foo bar=Bar baz='{qux: Qux}'
+salt -L jerry,stuart test.arg foo bar=Bar baz='{qux: Qux}' quux=true

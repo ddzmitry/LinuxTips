@@ -1,0 +1,3 @@
+mkdir /srv/salt/orch
+vi /srv/salt/orch/test_fun.sls
+salt-run state.orchestrate orch.test_fun

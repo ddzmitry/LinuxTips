@@ -1,0 +1,10 @@
+salt '*' state.show_top
+salt '*' match.glob '*'
+salt '*' cp.cache_file salt://top.sls
+salt '*' state.show_top
+salt '*' state.show_highstate
+salt '*' state.show_lowstate
+salt '*' state.highstate
+salt '*' state.highstate --out=json
+salt '*' state.highstate
+salt '*' state.highstate test=true

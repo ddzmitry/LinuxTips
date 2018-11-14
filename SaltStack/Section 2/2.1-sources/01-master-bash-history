@@ -1,0 +1,9 @@
+salt '*' test.ping
+salt --help | less
+salt '*' test.ping
+salt -L jerry test.ping
+salt -L jerry,stuart test.ping
+salt -G os_family:Debian test.ping
+salt -G os_family:RedHat test.ping
+salt -C 'G@os_family:RedHat and stu*'
+salt -C 'G@os_family:RedHat and stu*' test.ping

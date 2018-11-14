@@ -1,0 +1,7 @@
+vi /srv/pillar/mine.sls
+salt '*' saltutil.refresh_pillar
+salt '*' mine.send network.ip_addrs
+salt-run cache.mine '*'
+salt '*' mine.send status.uptime
+salt-run cache.mine '*'
+salt '*' mine.get '*' network.ip_addrs

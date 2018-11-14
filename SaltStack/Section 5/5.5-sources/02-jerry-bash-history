@@ -1,0 +1,2 @@
+salt-call mine.get 'stuart' network.ip_addrs
+salt-call mine.get 'stuart' network.ip_addrs --out=json

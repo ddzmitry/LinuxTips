@@ -1,0 +1,15 @@
+vi /srv/salt/apache.sls
+mkdir /srv/salt/_modules
+vi /srv/salt/_modules/myutil.py
+salt '*' saltutil.sync_modules
+salt '*' myutil.something
+vi /srv/salt/_modules/myutil.py
+salt '*' saltutil.sync_modules
+salt '*' myutil.something
+vi /srv/salt/apache.sls
+cd /srv/salt/
+ls
+mkdir apache
+mv mods.sls apache
+mv apache.sls apache/init.sls
+vi apache/init.sls

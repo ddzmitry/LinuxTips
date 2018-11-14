@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82ea8ee2-d761-4235-b899-5df16a40efc9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/SSL/SSL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaltStack/Info.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,17 +24,24 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="md" value="4" />
+          <entry key="01-master-bash-history" value="1" />
+          <entry key="02-jerry-bash-history" value="1" />
+          <entry key="master-shell-history" value="1" />
+          <entry key="md" value="5" />
+          <entry key="minion-shell-history" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Markdown" value="4" />
+          <entry key="Markdown" value="5" />
+          <entry key="PLAIN_TEXT" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="md" value="10266" />
+          <entry key="master-shell-history" value="124" />
+          <entry key="md" value="11143" />
+          <entry key="minion-shell-history" value="39" />
           <entry key="txt" value="12" />
         </counts>
       </usages-collector>
@@ -42,8 +49,8 @@
         <counts>
           <entry key="AIDL" value="17" />
           <entry key="JAVA" value="1" />
-          <entry key="Markdown" value="10245" />
-          <entry key="PLAIN_TEXT" value="12" />
+          <entry key="Markdown" value="11122" />
+          <entry key="PLAIN_TEXT" value="175" />
           <entry key="SQL" value="3" />
         </counts>
       </usages-collector>
@@ -56,23 +63,39 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HiveTips/tablecreations.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="176">
-                <caret line="1263" selection-start-line="1263" selection-end-line="1263" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/SaltStack/Section 1/master-shell-history">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="20">
+              <caret line="1" selection-start-line="1" selection-end-line="4" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SaltStack/Section 1/minion-shell-history">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-line="12" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SaltStack/Section 2/2.1-sources/01-master-bash-history">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SaltStack/Section 2/2.1-sources/02-jerry-bash-history">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/SSL/SSL.md">
+        <entry file="file://$PROJECT_DIR$/SaltStack/Info.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="67">
-                <caret line="135" column="6" selection-start-line="135" selection-start-column="4" selection-end-line="135" selection-end-column="70" />
+              <first_editor relative-caret-position="481">
+                <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
               </first_editor>
               <second_editor />
             </state>
@@ -95,6 +118,7 @@
     <findStrings>
       <find>if</find>
       <find>header</find>
+      <find>local.conf</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -105,6 +129,9 @@
       <list>
         <option value="$PROJECT_DIR$/HiveTips/tablecreations.md" />
         <option value="$PROJECT_DIR$/SSL/SSL.md" />
+        <option value="$PROJECT_DIR$/SaltStack/Section 1/master-shell-history" />
+        <option value="$PROJECT_DIR$/SaltStack/Section 1/minion-shell-history" />
+        <option value="$PROJECT_DIR$/SaltStack/Info.md" />
       </list>
     </option>
   </component>
@@ -114,7 +141,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="1912" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -136,7 +163,26 @@
             <path>
               <item name="LinuxTips" type="b2602c69:ProjectViewProjectNode" />
               <item name="LinuxTips" type="462c0819:PsiDirectoryNode" />
-              <item name="SSL" type="462c0819:PsiDirectoryNode" />
+              <item name="SaltStack" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LinuxTips" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LinuxTips" type="462c0819:PsiDirectoryNode" />
+              <item name="SaltStack" type="462c0819:PsiDirectoryNode" />
+              <item name="Section 1" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LinuxTips" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LinuxTips" type="462c0819:PsiDirectoryNode" />
+              <item name="SaltStack" type="462c0819:PsiDirectoryNode" />
+              <item name="Section 2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LinuxTips" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LinuxTips" type="462c0819:PsiDirectoryNode" />
+              <item name="SaltStack" type="462c0819:PsiDirectoryNode" />
+              <item name="Section 2" type="462c0819:PsiDirectoryNode" />
+              <item name="2.1-sources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -148,10 +194,15 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542074122396" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542161738376" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ddzmi\Desktop\Tutoring Trilogy\LinuxTips\SSL" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -177,7 +228,7 @@
       <updated>1539010950872</updated>
       <workItem from="1539010952574" duration="16875000" />
       <workItem from="1539735688936" duration="40431000" />
-      <workItem from="1542060638878" duration="6936000" />
+      <workItem from="1542060638878" duration="13216000" />
     </task>
     <task id="LOCAL-00001" summary="More on HIVE">
       <created>1539013609059</created>
@@ -197,13 +248,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64242000" />
+    <option name="totallyTimeSpent" value="70522000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.0804904" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2249467" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -244,16 +295,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="More on HIVE" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/HiveTips/tablecreations.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="176">
-            <caret line="1263" selection-start-line="1263" selection-end-line="1263" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/KafkaTips.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -265,8 +306,48 @@
     <entry file="file://$PROJECT_DIR$/SSL/SSL.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="67">
-            <caret line="135" column="6" selection-start-line="135" selection-start-column="4" selection-end-line="135" selection-end-column="70" />
+          <first_editor relative-caret-position="107">
+            <caret line="137" column="1" selection-start-line="137" selection-start-column="1" selection-end-line="137" selection-end-column="1" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HiveTips/tablecreations.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="176">
+            <caret line="1263" selection-start-line="1263" selection-end-line="1263" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SaltStack/Section 2/2.1-sources/01-master-bash-history">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SaltStack/Section 2/2.1-sources/02-jerry-bash-history">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SaltStack/Section 1/minion-shell-history">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="12" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SaltStack/Section 1/master-shell-history">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="1" selection-start-line="1" selection-end-line="4" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SaltStack/Info.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="481">
+            <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
           </first_editor>
           <second_editor />
         </state>

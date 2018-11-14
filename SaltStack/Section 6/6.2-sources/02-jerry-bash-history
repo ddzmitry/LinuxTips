@@ -1,0 +1,4 @@
+salt-call event.send myco/mytag
+salt-call event.send myco/mytag '{foo: Foo, bar: true}'
+salt-call event.send myco/mytag foo=Foo bar=Bar
+salt-call event.send myco/mytag with_grains='[os_family]'

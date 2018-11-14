@@ -1,0 +1,4 @@
+base:
+  '*':
+    - apache
+    - apache.welcome

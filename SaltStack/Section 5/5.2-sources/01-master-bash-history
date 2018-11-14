@@ -1,0 +1,6 @@
+vi /srv/salt/apache/init.sls
+salt jerry state.show_sls apache
+salt jerry state.sls apache
+salt jerry state.sls apache.mods
+salt jerry state.sls apache.mods test=true
+salt jerry state.sls apache.mods mock=true

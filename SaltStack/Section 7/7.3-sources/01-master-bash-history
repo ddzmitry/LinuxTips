@@ -1,0 +1,20 @@
+curl -b /root/cookies.txt -sSki https://localhost:8000/minions
+curl -b /root/cookies.txt -sSki https://localhost:8000/minions -H 'Accept: application/x-yaml'
+curl -b /root/cookies.txt -sSki https://localhost:8000/minions -H 'Accept: application/x-yaml' -d '
+[{"client": "local_async", "tgt": "*", "fun": "test.ping"}]
+'
+curl -b /root/cookies.txt -sSki https://localhost:8000/minions -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"client": "local_async", "tgt": "*", "fun": "test.ping"}]
+'
+curl -b /root/cookies.txt -sSki https://localhost:8000/minions -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"tgt": "*", "fun": "test.ping"}]
+'
+curl -b /root/cookies.txt -sSki https://localhost:8000/jobs/20170112160419906242 -H 'Accept: application/x-yaml' -H 'Content-type: application/json'
+curl -b /root/cookies.txt -sSki https://localhost:8000/jobs/20170112160419906242 -H 'Accept: application/x-yaml'
+curl -b /root/cookies.txt -sSki https://localhost:8000/keys -H 'Accept: application/x-yaml'
+curl -b /root/cookies.txt -sSkiN https://localhost:8000/events
+curl -O https://raw.githubusercontent.com/saltstack/salt/develop/salt/netapi/rest_cherrypy/index.html
+systemctl restart salt-master
+systemctl restart salt-api
+ip addr | less
+salt '*' test.ping

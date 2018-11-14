@@ -1,0 +1,49 @@
+> Get Salt from RPM
+* yum install https://repo.saltstack.com/yum/redhat/salt-repo-2018.3-1.el7.noarch.rpm
+* yum install salt-minion salt-api
+
+> create vim /etc/salt/minion.d/local.conf
+* Specify id: and master:
+
+```
+master: 00.00.00.205 or hostname
+id: slave1
+```
+
+*  systemctl start salt-minion
+
+
+
+
+### History
+
+wget -O - https://repo.saltstack.com/apt/ubuntu/14.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+vi /etc/apt/sources.list.d/saltstack.list
+sudo apt-get update
+sudo apt-get install salt-minion
+ls /etc/salt/
+vi /etc/salt/minion
+ls /etc/salt/
+vi /etc/salt/minion_id 
+rm /etc/salt/minion_id
+service salt-minion restart
+vi /etc/salt/minion
+service salt-minion restart
+less /var/log/salt/minion 
+exit
+vi /etc/salt/minion.d/local.conf
+ping 10.0.3.15
+less /var/log/salt/minion 
+vi /etc/salt/minion.d/local.conf 
+service salt-minion restart
+salt-call cp.list_master
+service salt-minion restart
+less /etc/salt/minion.d/local.conf 
+ping 192.168.56.101
+telnet 192.168.56.101 4505
+ls /etc/salt/
+less /etc/salt/grains 
+export PS1="\h \$ "
+cd
+export PS1="\h \$ "
+cd

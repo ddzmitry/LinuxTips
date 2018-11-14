@@ -1,0 +1,109 @@
+
+> Get Salt from RPM
+* yum install https://repo.saltstack.com/yum/redhat/salt-repo-2018.3-1.el7.noarch.rpm
+* yum install salt-master salt-api
+* systemctl start salt-master
+
+
+
+ls /etc/salt/
+vi /etc/salt/master
+ip 
+ip addr
+salt-key -F
+salt-key --help
+service salt-master start
+salt-key -F
+salt-key 
+ifconf
+ip addrs
+ip addr
+salt-key 
+pgrep -luntp
+pgrep -lntp
+netstat -luntp
+less /var/log/salt/master 
+less /etc/salt/master
+ip addr
+yum install net-tools -y
+netstat -luntp
+iptables -L
+iptables -F
+salt-key 
+less /etc/salt/pki/master/master.p*
+salt-key --help | less
+salt-key 
+salt-key -a jerry
+salt-key -A
+salt-key -F
+salt-key --help | less
+salt-key --gen-keys frank
+ls
+mv frank.pub /etc/salt/pki/master/minions/frank
+salt-key 
+salt-key -d frank
+export PS1="\h \$ "
+ifconfig 
+ls /etc/networks
+less /etc/networks
+ifconfig 
+grep -rni enp0s3 /etc/
+less /etc/sysconfig/network-scripts/ifcfg-enp0s3 
+shutdown now
+ifconfig 
+ping google.com
+ifconfig 
+ifconfig enp0s3 down
+ifconfig 
+ping google.com
+ifconfig 
+ping google.com
+ifconfig 
+shutdown now
+ping google.com
+ifconfig 
+ping google.com
+ifconfig 
+shutdown now
+export PS1="\h \$ "
+ls
+salt --help
+salt '*' test.ping
+salt-call service.enable salt-master --local
+yum install -y salt-minion
+salt-call service.enable salt-master --local
+salt-call service.start salt-master --local
+salt '*' test.ping
+salt-key
+ifconfig 
+iptables -F
+salt '*' test.ping
+salt --help | less
+salt '*' test.ping
+salt 'jer*' test.ping
+salt 'frank*' test.ping
+salt -E 'jerr.*' test.ping
+salt -L 'jerry,frank' test.ping
+salt -G 'os_family:Debian' test.ping
+salt -G 'os_family:RedHat' test.ping
+salt 'jerry' grains.items
+salt --help | less
+salt '*' test.ping
+salt 'jer*' test.ping
+salt 'frank*' test.ping
+salt -E 'jerr.*' test.ping
+salt -L 'jerry,frank' test.ping
+salt -G 'os_family:Debian' test.ping
+salt 'jerry' grains.items
+salt -G 'virtual:VirtualBox' test.ping
+salt -G 'virtual:physical' test.ping
+salt -C 'jer* and G@os_family:Debian not G@virtual:physical' test.ping
+vi /etc/salt/master
+salt -N common test.ping
+salt 'jerry' grains.setval roles '[web,caching]'
+salt -G 'roles:web' test.ping
+export PS1="\h \$ "
+cd
+python -c 'import salt; print salt.__file__'
+export PS1="\h \$ "
+cd

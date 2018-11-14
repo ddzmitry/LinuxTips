@@ -1,0 +1,30 @@
+curl -sSik https://localhost:8000/login -d username=saltdev -d password=saltdev -d eauth=auto
+curl -sSik https://localhost:8000/login -H 'Accept: application/x-yaml' -d username=saltdev -d password=saltdev -d eauth=auto
+curl -c /root/cookies.txt -sSik https://localhost:8000/login -H 'Accept: application/x-yaml' -d username=saltdev -d password=saltdev -d eauth=auto
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -d client=local -d tgt='*' -d fun=test.ping
+curl -sSik https://localhost:8000/run -H 'Accept: application/x-yaml' -d client=local -d tgt='*' -d fun=test.ping -d username=saltdev -d password=saltdev -d eauth=auto
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -d '
+[{"client": "local", "tgt": "*", "fun": "test.ping"}]
+'
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"client": "local", "tgt": "*", "fun": "test.ping"}]
+'
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"client": "local", "tgt": "*", "fun": "test.ping"}, {"client": "local", "tgt": "*", "fun": "cmd.run", "arg": ["uptime"]}]
+'
+salt '*' test.sleep 10
+salt '*' test.sleep 10 --async
+salt-run jobs.lookup_jid 20170112153638329767
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"client": "local_async", "tgt": "*", "fun": "test.ping"}]
+'
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"client": "runner", "fun": "jobs.list_jobs"}]
+'
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"client": "runner", "fun": "jobs.lookup_jid", "jid": ""}]
+'
+salt '*' test.sleep 10 --async
+curl -b /root/cookies.txt -sSik https://localhost:8000 -H 'Accept: application/x-yaml' -H 'Content-type: application/json' -d '
+[{"client": "runner", "fun": "jobs.lookup_jid", "jid": "20170112154143771135"}]
+'

@@ -1,0 +1,16 @@
+reactor:
+  - 'myco/myevent/*':
+    - /srv/reactor/highstate.sls
+  - 'myco/myapp/deploy':
+    - /srv/reactor/deploy_myapp.sls
+  - 'salt/beacon/*/inotify//var/www/html/index.html':
+    - /srv/reactor/fix_welcome.sls
+  - 'salt/netapi/hook/myco/myevent':
+    - /srv/reactor/deploy_myapp.sls
+
+rest_cherrypy:
+  port: 8000
+  ssl_crt: /etc/pki/tls/certs/localhost.crt
+  ssl_key: /etc/pki/tls/certs/localhost.key
+  app: /root/index.html
+  webhook_disable_auth: True
