@@ -323,3 +323,112 @@ slave1:
 ```
 
 ### Call from master or Minions 
+```sh
+salt '*' network.netstat
+salt '*' network.netstat -l debug
+slave2:
+    |_
+      ----------
+      inode:
+          14553
+      local-address:
+          0.0.0.0:111
+      program:
+          474/rpcbind
+      proto:
+          tcp
+      recv-q:
+          0
+      remote-address:
+          0.0.0.0:*
+      send-q:
+          0
+      state:
+          LISTEN
+      user:
+          0
+    |_
+
+salt 'slave[1-2]' cmd.run 'ls -la'
+salt 'slave[1-2]' cmd.run cmd='ls' cwd='/etc/salt'
+
+```
+> Positional Arguments
+```bash
+salt 'slave[1-2]' test.arg foo bar=Bar baz='{quz:Qux}'
+
+slave1:
+    ----------
+    args:
+        - foo
+    kwargs:
+        ----------
+        __pub_arg:
+            - foo
+            |_
+              ----------
+              bar:
+                  Bar
+              baz:
+                  {quz:Qux}
+
+salt 'slave[1-2]' test.arg foo bar=Bar baz='{quz:Qux}' quux=True
+slave1:
+    ----------
+    args:
+        - foo
+    kwargs:
+        ----------
+        __pub_arg:
+            - foo
+            |_
+              ----------
+              bar:
+                  Bar
+              baz:
+                  {quz:Qux}
+              quux:
+                  True
+
+```
+### Defining the State of Infrastructure
+```
+create:
+/srv/salt
+
+vim apache.sls
+install_apache:
+ pkg.installed:
+   - name: apache2
+
+and if converted to JSON will be 
+
+{
+  "install_apache": {
+    "pkg.installed": [
+      {
+        "name": "apache2"
+      }
+    ]
+  }
+}
+```
+
+> ####  salt '*' state.sls apache
+```
+To version control 
+It will cache file to all minionos
+
+salt slave[1-2] cp.cache_file salt://apache.sls
+slave2:
+    /var/cache/salt/minion/files/base/apache.sls
+slave1:
+    /var/cache/salt/minion/files/base/apache.sls
+
+```
+> Get IP Address data 
+```
+ salt '*' network.ip_addrs
+ salt '*' network.get_hostname
+```
+
