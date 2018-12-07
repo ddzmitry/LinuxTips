@@ -432,3 +432,120 @@ slave1:
  salt '*' network.get_hostname
 ```
 
+> Dry Run
+```
+ salt '*' state.sls apache test=true
+```
+
+> Execution Flow of a State Run 
+
+```
+To see what will hapeened when playbook will run 
+
+salt '*' state.show_sls
+
+slave2:
+    ----------
+    install_apache:
+        ----------
+        __env__:
+            base
+        __sls__:
+            apache
+        pkg:
+            |_
+              ----------
+              name:
+                  httpd
+            - installed
+            |_
+              ----------
+              order:
+                  10000
+
+salt '*' state.show_low_sls
+```
+> Debugging
+```
+salt '*' state.sls apache -l debug
+```
+
+#### Jinja and Pillar 
+```
+#!jinja|yaml
+
+```
+
+> Use custom Python Functions and maintain states 
+``` py
+mkdir /srv/salt/_modules
+vim /srv/salt/_modules/myutil.py
+
+def something():
+    return 'something happened'
+
+def date():
+    return __salt__['cmd.run']('date')
+    
+    
+salt '*' saltutil.sync_modules
+
+
+[root@SaltStackLearning salt]# salt '*' myutil.something
+slave2:
+    something happened
+slave1:
+    something happened
+
+[root@SaltStackLearning salt]# salt '*' myutil.date
+slave2:
+    Fri Dec  7 00:03:44 UTC 2018
+slave1:
+    Fri Dec  7 00:03:44 UTC 2018
+```
+
+
+#### Config States Using Pillar
+* _Pillar is cached on Master_
+* _Pillar is kept in-memory on the minions_
+
+```
+mkdir  /srv/salt/pillar
+
+[root@SaltStackLearning pillar]# cat name.sls
+{% set lookup = {
+    'slave1': "Slave 1 World",
+    'slave2': "Slave 2 World",
+} %}
+#Lookup based of grains.id
+{% set name = lookup[grains.id] %}
+
+name: {{ name | json() }}
+
+
+
+All minions will get name.sls file 
+
+[root@SaltStackLearning pillar]# cat top.sls
+base:
+  '*':
+    - name
+
+```
+> Refresh Pillar 
+```
+
+salt '*' saltutil.refresh_pillar
+
+4.5 Files in apache 
+salt '*' state.sls apache.welcome pillar='{name: Poop}'
+
+```
+### Salt Formulas 
+```
+To list Files on Master
+salt slave1 cp.list_master
+To list sls files avaliable on master
+salt slave1 cp.list_states
+
+```
