@@ -549,3 +549,218 @@ To list sls files avaliable on master
 salt slave1 cp.list_states
 
 ```
+> Salt run complex salt trees
+```
+5.1 Ti run State Tree
+salt '*' state.highstate 
+Histate will use top file tat avaliable to run across minions
+
+base:
+  '*':
+    - apache
+    - apache.welcome
+
+salt '*' state.highstate pillar='{name: Poop}' --out=json
+```
+> Ordering In SLS States 
+```
+use 
+- require:
+  - pkg: install_apache 
+```
+
+> Conditional Branching on Change
+```
+    - onchanges:
+      - file: mod_{{ conf }}
+    - watch_in:
+      - service: start_apache
+```
+
+> Conditional Branching on Fail
+
+```
+notify_of_fail:
+  event.send:
+    - name: myco/myapp/fail_deploy
+    - onfail:
+      - git: myapp
+```
+
+> Prerequ 
+```
+Module will run salt executor 
+
+  module.run:
+    - name: service.stop
+
+
+    - prereq:
+      - git: myapp
+```
+
+> Share Data Via Mine ins Salt 
+```
+in mine.sls in pillar 
+
+mine_functions:
+  network.ip_addrs: []
+
+
+
+base:
+  '*':
+    - name
+    - mine
+
+salt cache.mine '*'
+```
+
+#### Salt Orchestration 5.6
+```
+\srv\salt\orch\test_fun.sls
+salt-run state.orchestrate orch.test_fun
+
+
+call_execution_function:
+  salt.function:
+    - tgt: '*'  ----> All Targets 
+    - name: cmd.run 
+    - arg:
+      - date
+
+call_state_functions_one:
+  salt.state:
+    - tgt: 'jerry'
+    - sls:
+      - apache.welcome
+
+call_state_functions_two:
+  salt.state:
+    - tgt: 'stuart'
+    - sls:
+      - apache.welcome
+    - require:
+      - salt: call_state_functions_one
+
+
+```
+
+#### Events in Salt Section 6
+* salt-run state.event pretty=true (for pretty print)
+> Sending Custom Events 
+```
+event.send 
+
+```
+> Salt Reactors 
+* https://docs.saltstack.com/en/latest/ref/engines/all/salt.engines.reactor.html
+```
+
+in /etc/salt/master 
+add
+reactor:
+  - 'mycom/myevent/*':
+     - /srv/reactor/highstate.sls
+
+in highstate.sls
+
+run_highstate:
+  cmd.state.highstate:
+    - tgt: '*'
+
+which is equals salt '*' state.highstate
+
+
+deploy_myapp:
+  cmd.state.sls:
+    - tgt: {{ data.id }}
+    - kwarg:
+        mods: myapp
+        pillar: ---> pass pillar 
+          version: {{ data.data.version }}
+          
+```
+> Beacon Modules can watch systems for events 
+* https://docs.saltstack.com/en/latest/topics/beacons/
+```
++ in /srv/pillar/beacons.sls
+
+beacons:
+  inotify:
+    disable_during_state_run: True
+    /var/www/html/index.html:
+      mask:
+      - close_write
+
++ change top.sls
+
+base:
+  '*':
+    - name
+    - mine
+    - monitor_welcome
+
+
+salt '*' saltutil.refresh_pillar
+
+salt '*' pillar.get beacons
+salt '*' beacons.enable -> to enable beacons 
+
+```
+
+
+
+### Pyton API for SALT 
+* https://docs.saltstack.com/en/latest/ref/clients/
+
+```
+in master 
+
+external_auth:
+  auto:
+    saltdev:
+      - .*
+      - '@wheel'
+      - '@runner'
+    saltdev_restricted:
+      - test.*
+
+rest_cherrypy:
+  port: 8000
+  ssl_crt: /etc/pki/tls/certs/localhost.crt
+  ssl_key: /etc/pki/tls/certs/localhost.key
+  
+  systemctl restart salt-master
+ to run salt -a auto '*' test.ping
+ 
+ 
+ [root@SaltStackLearning pillar]# start salt-api
+ -bash: start: command not found
+ [root@SaltStackLearning pillar]# systemctl start salt-api
+ [root@SaltStackLearning pillar]# curl -sSik https://localhost:8000
+ HTTP/1.1 200 OK
+ Content-Length: 146
+ Access-Control-Expose-Headers: GET, POST
+ Vary: Accept-Encoding
+ Server: CherryPy/5.6.0
+ Allow: GET, HEAD, POST
+ Access-Control-Allow-Credentials: true
+ Date: Mon, 10 Dec 2018 04:03:47 GMT
+ Access-Control-Allow-Origin: *
+ Content-Type: application/json
+ 
+ {"clients": ["local", "local_async", "local_batch", "local_subset", "runner", "runner_async", "ssh", "wheel", "wheel_async"], "return": "Welcome"}[root@SaltStackLearning pillar]#
+
+ 
+```
+
+```python
+import salt.config
+import salt.loader
+
+__opts__ = salt.config.minion_config('/etc/salt/minion')
+__grains__ = salt.loader.grains(__opts__)
+for i in __grains__ :
+    print(i)
+```
