@@ -298,3 +298,8 @@ metadata:
   selfLink: /apis/route.openshift.io/v1/namespaces/my-web-application/routes/route2
   uid: 0d9f0261-4016-11ea-9986-0800271920dc
 ```
+### Templates (tricky)
+https://docs.openshift.com/container-platform/3.7/dev_guide/templates.html
+```bash
+oc create -f template-config.yml
+```
