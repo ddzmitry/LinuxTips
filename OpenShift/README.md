@@ -135,8 +135,166 @@ route.route.openshift.io/docker-registry exposed
 > Local Registry  172.30.1.1:5000/my-web-application/simple-webapp-docker
 ```
 https://blog.openshift.com/remotely-push-pull-container-images-openshift/
-
+https://docs.openshift.com/enterprise/3.0/install_config/install/docker_registry.html
 
 
 #### Webhooks
 > Inside of Editbuilds you can create webhooks for bitbucket
+
+
+#### Login to OpenShift minishift registry
+https://docs.okd.io/latest/minishift/getting-started/quickstart.html
+> docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)
+#### CONNECT DOCKER TO REGISTRY 
+https://docs.okd.io/latest/minishift/using/docker-daemon.html
+> get docker synched with minishift 
+```
+minishift docker-env
+
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.101:2376"
+export DOCKER_CERT_PATH="/Users/john/.minishift/certs"
+export DOCKER_API_VERSION="1.24"
+# Run this command to configure your shell:
+# eval $(minishift docker-env)
+```
+
+### Auth Yourself
+```
+docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)
+
+dzmitrydubarau@Dzmitrys-MacBook-Pro simple-webapp-docker % docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+Login Succeeded
+```
+### Check if all good
+```
+
+docker ps
+
+dzmitrydubarau@Dzmitrys-MacBook-Pro simple-webapp-docker % docker push 172.30.1.1:5000/my-web-application/simple-webapp-docker:latest
+```
+
+### Creating new application 
+https://github.com/debianmaster/Notes/wiki/How-to-push-docker-images-to-openshift-internal-registry-and-create-application-from-it.
+```
+> From local registry 
+docker login -u administrator -p $(oc whoami -t) $(minishift openshift registry)
+docker tag 8a28ab6230f1 172.30.1.1:5000/my-web-application/nodeapptest
+docker push 172.30.1.1:5000/my-web-application/nodeapptest
+oc new-app 172.30.1.1:5000/my-web-application/nodeapptest
+oc new-app my-web-application/nodeapptest --name=nodeapptest
+oc expose svc/nodeapptest
+```
+#### Update Code 
+```
+docker tag cdc8f05823c9 172.30.1.1:5000/my-web-application/nodeapptest:latest
+docker push 172.30.1.1:5000/my-web-application/nodeapptest:latest
+oc rollout latest dc/nodeapptest -n my-web-application
+```
+
+#### Check the history
+```
+oc rollout latest dc/nodeapptest
+oc rollout history dc/nodeapptest
+REVISION        STATUS          CAUSE
+1               Complete        config change
+2               Complete        manual change
+3               Complete        manual change
+4               Complete        manual change
+5               Complete        manual change
+
+oc rollout describe dc nodeapptest
+oc rollout undo dc/nodeapptest (roll back deployment)
+```
+
+## Creating Deployment Ex:
+https://docs.okd.io/latest/dev_guide/deployments/how_deployments_work.html
+
+> nodeapptest - IMAGE NAME 
+
+```yaml
+kind: "DeploymentConfig"
+apiVersion: "v1"
+metadata:
+  name: "nodeapptest"
+spec:
+  template: 
+    metadata:
+      labels:
+        name: "nodeapptest"
+    spec:
+      containers:
+        - name: "nodeapptest"
+          image: "nodeapptest:latest"
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+  replicas: 1 
+  triggers:
+    - type: "ConfigChange" 
+    - type: "ImageChange" 
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - "nodeapptest"
+        from:
+          kind: "ImageStreamTag"
+          name: "nodeapptest:latest"
+  strategy: 
+    type: "Rolling"
+  paused: false 
+  revisionHistoryLimit: 2 
+  minReadySeconds: 0 
+```
+### Go to builds -> Deploy YAML/JSOM
+> now since type is Rolling we can update code and it will redeploy image
+
+```
+docker tag b4f4b4b1e0ac 172.30.1.1:5000/my-web-application/nodeapptest:latest
+docker push 172.30.1.1:5000/my-web-application/nodeapptest:latest
+oc rollout latest dc/nodeapptest2 -n my-web-application
+oc rollout latest dc/nodeapptest -n my-web-application
+oc rollout latest dc/nodeapptest(ANY DEPLOYMENT) -n my-web-application
+```
+
+## Creating Service 
+> Go to Services Deploy YAML
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeapptest-docker     
+spec:
+  selector:
+    deploymentconfig: nodeapptest-docker
+    # IP WILL ASSIGN AUTOMATICALLY
+  ports:
+  - name: 8080-tcp
+    port: 8080               
+    protocol: TCP
+    targetPort: 8080         
+```
+> Go to Routes and Create ROUTE 
+> Change YAML
+```
+haproxy.router.openshift.io/balance: roundrobin
+haproxy.router.openshift.io/disable_cookies: 'true'
+```
+```yaml
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/balance: roundrobin
+    haproxy.router.openshift.io/disable_cookies: 'true'
+    openshift.io/host.generated: 'true'
+  creationTimestamp: '2020-01-26T08:30:05Z'
+  labels:
+    app: nodeapptest2
+  name: route2
+  namespace: my-web-application
+  resourceVersion: '201896'
+  selfLink: /apis/route.openshift.io/v1/namespaces/my-web-application/routes/route2
+  uid: 0d9f0261-4016-11ea-9986-0800271920dc
+```

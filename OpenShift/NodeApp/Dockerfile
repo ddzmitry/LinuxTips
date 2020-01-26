@@ -11,5 +11,6 @@ RUN npm install
 COPY ./ ./
 # Open Port on Docker Box (not necessary at this case)
 EXPOSE 8080
+EXPOSE 9999
 # Run application
 ENTRYPOINT ["npm", "start"]
