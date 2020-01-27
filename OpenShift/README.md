@@ -302,4 +302,5 @@ metadata:
 https://docs.openshift.com/container-platform/3.7/dev_guide/templates.html
 ```bash
 oc create -f template-config.yml
+
 ```
